@@ -14,12 +14,10 @@ app.use(express.static('./client/dist'))
 app.delete('/cows', (req, res) => {
   var params = [req.query.id];
   model.remove(params)
-  .then((message)=> {
-    console.log('deleted cow w message', message)
+  .then(() => {
     res.send('deleted cow info');
   })
   .catch((err) => {
-    console.log('error deleting cow', err);
     res.sendStatus(500);
   })
 })
@@ -27,7 +25,7 @@ app.delete('/cows', (req, res) => {
 app.put('/cows', (req, res) => {
   var params = [req.body.name, req.body.description, req.query.id];
   model.update(params)
-  .then((update) => {
+  .then(() => {
     res.send(`updated cow ${req.query.id}`) 
   })
   .catch((err) => {
@@ -39,13 +37,13 @@ app.put('/cows', (req, res) => {
 app.get('/cows', (req, res) => {  
   model.retrieve()
   .then((resp) => {
-    var cows = resp.map((c) => {
-      return { id: c._id,
+    var cows = resp[0].map((c) => {
+      return { id: c.id,
         name: c.name,
         description: c.description
       }
     })
-    res.json(cows);
+    res.send(cows);
   })
   .catch((err) => {
     console.log('retrieve err ', err);
@@ -57,7 +55,7 @@ app.post('/cows', (req, res) => {
   var params = [req.body.name, req.body.description]
   model.save(params)
   .then((resp) => {
-    let id = {insertId: resp.insertId};
+    let id = {insertId: resp[0].insertId};   
     res.send(id);
   })
   .catch((err) => {

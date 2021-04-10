@@ -7,7 +7,7 @@ var connection = mysql.createConnection({
   password: ''
 })
 
-var Cows = `(
+const Cows = `(
   id MEDIUMINT NOT NULL AUTO_INCREMENT,
   name VARCHAR(200),
   description VARCHAR(200),
